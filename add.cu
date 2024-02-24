@@ -17,7 +17,7 @@ void time_gpu_vs_cpu(int n);
 
 
 int main(){
-	time_gpu_vs_cpu(100000);
+	time_gpu_vs_cpu(100000000);
 
 }
 
