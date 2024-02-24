@@ -48,9 +48,9 @@ int main(){
 int gpu_run(){
 
 	const int size = 1000;
-	int* array_a = (int*)malloc(sizeof(int) * size));
-	int* array_b = (int*)malloc(sizeof(int) * size));
-	int* array_c = (int*)malloc(sizeof(int) * size));
+	int* array_a = (int*)malloc(sizeof(int) * size);
+	int* array_b = (int*)malloc(sizeof(int) * size);
+	int* array_c = (int*)malloc(sizeof(int) * size);
 
 	for(int i = 0; i < size; ++i){
 		array_a[i] = array_b[i] = i;
