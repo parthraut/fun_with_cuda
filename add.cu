@@ -4,9 +4,6 @@
 #include <math.h>
 
 // CUDA Kernel for adding two numbers
-__global__ void add(int a, int b, int *c){
-	*c = a + b;
-}
 
 
 __global__ void add_array(int* a, int* b, int* c, int N){
@@ -16,38 +13,19 @@ __global__ void add_array(int* a, int* b, int* c, int N){
 
 }
 
-void gpu_run();
+void time_gpu_vs_cpu(int n);
 
 
 int main(){
-	int a, b, c;
-	int *d_c;
-
-	int size = sizeof(int);
-
-	cudaMalloc((void **)&d_c, size);
-	
-	a = 2;
-	b = 7;
-	
-	add<<<1,1>>>(a, b, d_c);
-
-	cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
-	
-	cudaFree(d_c);
-	
-	printf("2 + 7 = %d\n", c);
-	
-	gpu_run();
-	return 0;
+	time_gpu_vs_cpu(1000);
 
 }
 
 
 
-void gpu_run(){
+void time_gpu_vs_cpu(int size){
 
-	const int size = 1000;
+	// host memory pointers
 	int* array_a = (int*)malloc(sizeof(int) * size);
 	int* array_b = (int*)malloc(sizeof(int) * size);
 	int* array_c = (int*)malloc(sizeof(int) * size);
@@ -57,6 +35,14 @@ void gpu_run(){
 		
 	}
 
+	// Time on CPU
+	clock_t start = clock();
+	for(int i = 0; i < size; ++i){
+		array_c[i] = array_a[i] + array_b[i];
+	}
+	clock_t end = clock();
+	double time = (double)(end - start) / CLOCKS_PER_SEC;
+	printf("Time on CPU: %f\n", time);
 	
 
 	// device memory pointers
@@ -78,7 +64,13 @@ void gpu_run(){
 	int threadsPerBlock = 256;
 	int numBlocks = (int)ceil((double)size / (double)threadsPerBlock);
 
+	// Time on GPU
+	start = clock();
 	add_array<<<numBlocks, threadsPerBlock>>>(array_a_d, array_b_d, array_c_d, size);
+	cudaDeviceSynchronize();
+	end = clock();
+	time = (double)(end - start) / CLOCKS_PER_SEC;
+	printf("Time on GPU: %f\n", time);
 
 	cudaMemcpy(array_c, array_c_d, size, cudaMemcpyDeviceToHost);
 
