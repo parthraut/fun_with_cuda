@@ -16,7 +16,7 @@ __global__ void add_array(int* a, int* b, int* c, int N){
 
 }
 
-int gpu_run();
+void gpu_run();
 
 
 int main(){
@@ -45,7 +45,7 @@ int main(){
 
 
 
-int gpu_run(){
+void gpu_run(){
 
 	const int size = 1000;
 	int* array_a = (int*)malloc(sizeof(int) * size);
