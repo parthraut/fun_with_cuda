@@ -68,7 +68,7 @@ int main(){
     matrix_mul<<<numBlocks, threadsPerBlock>>>(A_d, B_d, C_d, matrixSize);
 
     clock_t end = clock();
-    double time = (double)(end - start) / CLOCKS_PER_SEC;
+    double gpu_time = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Time on GPU: %f\n", time);
 
     // transfer result back to host
@@ -77,6 +77,7 @@ int main(){
 
 
     // calculate matrix product on CPU
+    int* C_CPU = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     start = clock();
     for(int i = 0; i < matrixSize; i++){
         for(int j = 0; j < matrixSize; j++){
@@ -84,12 +85,30 @@ int main(){
             for(int k = 0; k < matrixSize; k++){
                 sum += A[i * matrixSize + k] * B[k * matrixSize + j];
             }
-            C[i * matrixSize + j] = sum;
+            C_CPU[i * matrixSize + j] = sum;
         }
     }
     end = clock();
-    time = (double)(end - start) / CLOCKS_PER_SEC;
+    double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Time on CPU: %f\n", time);
+
+    // verify result
+    bool correct = true;
+    for(int i = 0; i < matrixSize; i++){
+        for(int j = 0; j < matrixSize; j++){
+            if(C[i * matrixSize + j] != C_CPU[i * matrixSize + j]){
+                printf("Error: C[%d][%d] = %d, C_CPU[%d][%d] = %d\n", i, j, C[i * matrixSize + j], i, j, C_CPU[i * matrixSize + j]);
+                correct = false;
+            }
+        }
+    }
+    if(correct){
+        printf("Result is correct!\n");
+    }
+
+    // calculate speedup
+    printf("Speedup: %f\n", cpu_time / gpu_time);
+
 
     free(A);
     free(B);
