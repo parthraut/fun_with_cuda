@@ -69,7 +69,7 @@ int main(){
 
     clock_t end = clock();
     double gpu_time = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Time on GPU: %f\n", time);
+    printf("Time on GPU: %f\n", gpu_time);
 
     // transfer result back to host
 
@@ -90,7 +90,7 @@ int main(){
     }
     end = clock();
     double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Time on CPU: %f\n", time);
+    printf("Time on CPU: %f\n", cpu_time);
 
     // verify result
     bool correct = true;
