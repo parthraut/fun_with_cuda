@@ -74,6 +74,7 @@ int main(){
     // transfer result back to host
 
     cudaMemcpy(C, C_d, sizeof(int) * matrixSize * matrixSize, cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
 
 
     // calculate matrix product on CPU
@@ -87,7 +88,7 @@ int main(){
             }
             C_CPU[i * matrixSize + j] = sum;
         }
-        printf("CPU progress (%): %f\n", (float)i / matrixSize * 100);
+        // printf("CPU progress (%): %f\n", (float)i / matrixSize * 100);
     }
     end = clock();
     double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
