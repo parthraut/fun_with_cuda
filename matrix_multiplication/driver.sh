@@ -7,7 +7,7 @@ if ! nvcc -o matrix_multiplication matrix_mul.cu; then
 fi
 
 # Run the program with values [1, 2, 4, ..., 1024]
-for ((i=1; i<=1024; i*=2))
+for ((i=1; i<=2048; i*=2))
 do
     echo "Running with value: $i"
     if ! ./matrix_multiplication $i; then
