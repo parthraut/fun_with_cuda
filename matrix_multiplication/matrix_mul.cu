@@ -12,6 +12,7 @@ Optimize your kernel to make use of shared memory to reduce global memory access
 */
 #include <stdio.h>
 #include <cuda_runtime.h>
+#include <assert.h>
 
 __global__ void matrix_mul(int* A, int* B, int* C, int N){
     // do matrix multiplication
