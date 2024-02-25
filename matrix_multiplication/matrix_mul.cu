@@ -30,7 +30,7 @@ __global__ void matrix_mul(int* A, int* B, int* C, int N){
 
 int main(){
 
-    const int matrixSize = 10000;
+    const int matrixSize = 2000;
     int* A = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     int* B = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     int* C = (int*) malloc(matrixSize * matrixSize * sizeof(int));
