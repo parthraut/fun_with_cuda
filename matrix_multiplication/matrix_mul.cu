@@ -28,10 +28,11 @@ __global__ void matrix_mul(int* A, int* B, int* C, int N){
     }
 }
 
-int main(){
-    int matrixSize;
-    printf("Enter matrix size: ");
-    scanf("%d", &matrixSize);
+int main(int argc, char** argv){
+
+    // matrix size passed in as command line argument
+    assert(argc == 2);
+    int matrixSize = atoi(argv[1]);
 
     int* A = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     int* B = (int*) malloc(matrixSize * matrixSize * sizeof(int));
@@ -112,6 +113,10 @@ int main(){
 
     // calculate speedup
     printf("Speedup: %f\n", cpu_time / gpu_time);
+
+    // add gpu_time and cpu_time to a file
+    FILE* file = fopen("matrix_multiplication.csv", "a");
+    fprintf(file, "%d, %f, %f, %f\n", matrixSize, gpu_time, cpu_time, cpu_time / gpu_time);
 
 
     free(A);
