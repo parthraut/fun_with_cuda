@@ -65,7 +65,7 @@ int main(){
 
     clock_t start = clock();
 
-    matrix_mul<<<numBlocks, threadsPerBlock>>(A_d, B_d, C_d, matrixSize);
+    matrix_mul<<<numBlocks, threadsPerBlock>>>(A_d, B_d, C_d, matrixSize);
 
     clock_t end = clock();
     double time = (double)(end - start) / CLOCKS_PER_SEC;
