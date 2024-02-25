@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile CUDA program using nvcc
-if ! nvcc -o matrix_multiplication matrix_multiplication.cu; then
+if ! nvcc -o matrix_multiplication matrix_mul.cu; then
     echo "Error: Compilation failed"
     exit 1
 fi
