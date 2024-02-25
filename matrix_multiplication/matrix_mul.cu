@@ -29,8 +29,10 @@ __global__ void matrix_mul(int* A, int* B, int* C, int N){
 }
 
 int main(){
+    int matrixSize;
+    printf("Enter matrix size: ");
+    scanf("%d", &matrixSize);
 
-    const int matrixSize = 1200;
     int* A = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     int* B = (int*) malloc(matrixSize * matrixSize * sizeof(int));
     int* C = (int*) malloc(matrixSize * matrixSize * sizeof(int));
