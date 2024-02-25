@@ -86,8 +86,8 @@ int main(){
                 sum += A[i * matrixSize + k] * B[k * matrixSize + j];
             }
             C_CPU[i * matrixSize + j] = sum;
-            printf("progress (%): %f\n", (float)(i * matrixSize + j) / (matrixSize * matrixSize) * 100.0f);
         }
+        printf("CPU progress (%): %f\n", (float)i / matrixSize * 100);
     }
     end = clock();
     double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
