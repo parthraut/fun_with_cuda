@@ -33,8 +33,14 @@ __global__ void convolution(int *I, int *F, int *O, int N){
     }
 }
 
-int main(){
-    int N = 1024;
+int main(int argc, char **argv){
+    
+    if (argc != 2){
+        printf("Usage: %s N\n", argv[0]);
+        exit(1);
+    }
+    int N = atoi(argv[1]);
+
     // generate I and F
     int *I = (int *)malloc(N * N * sizeof(int));
     int *F = (int *)malloc(3 * 3 * sizeof(int));
@@ -64,13 +70,23 @@ int main(){
     // launch kernel
     dim3 block(32, 32);
     dim3 grid((int)ceil(((double)N-2)/32), (int)ceil(((double)N-2)/32));
+
+    // start timer
+    start = clock();
     convolution<<<grid, block>>>(d_I, d_F, d_O, N);
+    cudaDeviceSynchronize();
+    // stop timer
+    end = clock();
+
+    double gpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
     // copy data back to host
     cudaMemcpy(O, d_O, (N-2) * (N-2) * sizeof(int), cudaMemcpyDeviceToHost);
 
     // execute convolution on CPU to verify results
     int *O_CPU = (int *)malloc((N-2) * (N-2) * sizeof(int));
+
+    start = clock();
     for (int i = 0; i < N-2; i++){
         for (int j = 0; j < N-2; j++){
             int sum = 0;
@@ -82,6 +98,9 @@ int main(){
             O_CPU[i * (N-2) + j] = sum;
         }
     }
+    end = clock();
+
+    double cpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
     // compare results with a flag
     int flag = 1;
@@ -96,6 +115,12 @@ int main(){
     } else {
         printf("Results do not match!\n");
     }
+
+    double speedup = cpu_time / gpu_time;
+    printf("speedup: %f\n", speedup);
+
+    FILE* file = fopen("convolution.csv", "a");
+    fprintf(file, "%d, %f, %f, %f\n", atoi(argv[1]), gpu_time, cpu_time, cpu_time / gpu_time);
     
 
 
