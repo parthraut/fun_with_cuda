@@ -13,17 +13,9 @@ __global__ void add_array(int* a, int* b, int* c, int N){
 
 }
 
-void time_gpu_vs_cpu(int n);
 
-
-int main(){
-	time_gpu_vs_cpu(100000000);
-
-}
-
-
-
-void time_gpu_vs_cpu(int size){
+int main(int argc, char** argv){
+	int size = atoi(argv[1]);
 
 	// host memory pointers
 	int* array_a = (int*)malloc(sizeof(int) * size);
@@ -41,8 +33,7 @@ void time_gpu_vs_cpu(int size){
 		array_c[i] = array_a[i] + array_b[i];
 	}
 	clock_t end = clock();
-	double time = (double)(end - start) / CLOCKS_PER_SEC;
-	printf("Time on CPU: %f\n", time);
+	double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
 	
 
 	// device memory pointers
@@ -69,12 +60,15 @@ void time_gpu_vs_cpu(int size){
 	add_array<<<numBlocks, threadsPerBlock>>>(array_a_d, array_b_d, array_c_d, size);
 	cudaDeviceSynchronize();
 	end = clock();
-	time = (double)(end - start) / CLOCKS_PER_SEC;
-	printf("Time on GPU: %f\n", time);
+	double gpu_time = (double)(end - start) / CLOCKS_PER_SEC;
 
 	cudaMemcpy(array_c, array_c_d, size, cudaMemcpyDeviceToHost);
 
-	printf("success!\n");
+	// calculate speedup
+    printf("Speedup: %f\n", cpu_time / gpu_time);
+
+	FILE* file = fopen("vector_addition.csv", "a");
+    fprintf(file, "%d, %f, %f, %f\n", atoi(argv[1]), gpu_time, cpu_time, cpu_time / gpu_time);
 
 	cudaFree(array_a_d);
 	cudaFree(array_b_d);
