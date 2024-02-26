@@ -46,7 +46,7 @@ __global__ void add(int* A, int N){
 int main(int argc, char **argv){
     // Initialize array
     int N = 256;
-    int* A = malloc(sizeof(int) * N);
+    int* A = (int*) malloc(sizeof(int) * N);
     for (int i = 0; i < N; i++){
         A[i] = i;
     }
