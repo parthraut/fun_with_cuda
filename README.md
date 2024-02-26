@@ -3,6 +3,7 @@ By Parth Raut
 
 ## Introduction
 This fun project involved running various algorithms and comparing the computational time to compute these on CPU vs GPU. Run on my personal NVIDIA Jetson Nano!
+
 ![My Jetson](misc/jetson.jpeg)
 
 ## Vector Addition
