@@ -82,7 +82,7 @@ int main(int argc, char **argv){
     // transfer result
     int sum = 0;
 
-    cudaMemcpy(&sum, A_d, sizeof(int), cudaMemcpyDevicetoHost);
+    cudaMemcpy(&sum, A_d, sizeof(int), cudaMemcpyDeviceToHost);
 
     printf("sum is %d\n", sum);
 
