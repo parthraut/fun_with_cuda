@@ -56,7 +56,11 @@ int main(int argc, char** argv){
     cudaMemcpy(d_A, A, N * sizeof(int), cudaMemcpyHostToDevice);
 
     // kernel call
+    clock_t start = clock();
     make_histogram<<<(N + 255) / 256, 256>>>(d_A, d_H, N, M);
+    cudaDeviceSynchronize();
+    clock_t end = clock();
+    double gpu_time = (double)(end - start) / CLOCKS_PER_SEC;
 
     // copy H from device
     cudaMemcpy(H, d_H, M * sizeof(int), cudaMemcpyDeviceToHost);
@@ -67,9 +71,12 @@ int main(int argc, char** argv){
         H_cpu[i] = 0;
     }
 
+    start = clock();
     for(int i = 0; i < N; i++){
         H_cpu[A[i]]++;
     }
+    end = clock();
+    double cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
 
     // compare results
     bool isValid = true;
@@ -84,6 +91,9 @@ int main(int argc, char** argv){
         printf("Success: GPU and CPU histograms match.\n");
     }
 
+    // calculate speedup
+    printf("Speedup: %f\n", cpu_time / gpu_time);
+    
     // free memory
     free(A);
     free(H);

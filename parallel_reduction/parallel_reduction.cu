@@ -83,6 +83,7 @@ int main(int argc, char **argv){
         add<<<numBlocks, threadsPerBlock, sharedMemSize>>>(A_d, N);
         kernel_invocations++;
     }
+    cudaDeviceSynchronize();
     stop = clock();
     double gpu_time = (double)(stop - start) / CLOCKS_PER_SEC;
     printf("GPU time: %f\n", gpu_time);
