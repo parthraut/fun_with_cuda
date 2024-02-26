@@ -70,10 +70,10 @@ int main(int argc, char **argv){
     add<<<numBlocks, threadsPerBlock, sharedMemSize>>>(A_d, N);
 
     // now, sum is placed in A_d[0...numBlocks]. Keep invoking kernel until result in A_d[0]
-
-    for(int n = numBlocks; n > 0; n = (int)ceil((double)n / (double)threadsPerBlock)){
-        int blocks_needed = (int)ceil((double)n / (double)threadsPerBlock);
-        add<<<blocks_needed, threadsPerBlock, sharedMemSize>>>(A_d, n);
+    while(numBlocks > 1){
+        N = numBlocks;
+        numBlocks = (int)ceil((double)N / (double)threadsPerBlock);
+        add<<<numBlocks, threadsPerBlock, sharedMemSize>>>(A_d, N);
     }
     stop = clock();
     double gpu_time = (double)(stop - start) / CLOCKS_PER_SEC;
