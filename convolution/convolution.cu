@@ -72,11 +72,11 @@ int main(int argc, char **argv){
     dim3 grid((int)ceil(((double)N-2)/32), (int)ceil(((double)N-2)/32));
 
     // start timer
-    start = clock();
+    clock_t start = clock();
     convolution<<<grid, block>>>(d_I, d_F, d_O, N);
     cudaDeviceSynchronize();
     // stop timer
-    end = clock();
+    clock_t end = clock();
 
     double gpu_time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
