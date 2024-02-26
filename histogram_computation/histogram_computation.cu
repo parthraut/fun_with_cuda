@@ -93,7 +93,11 @@ int main(int argc, char** argv){
 
     // calculate speedup
     printf("Speedup: %f\n", cpu_time / gpu_time);
-    
+
+    // add gpu_time and cpu_time to a file
+    FILE* file = fopen("histogram.csv", "a");
+    fprintf(file, "%d, %f, %f, %f\n", atoi(argv[1]), gpu_time, cpu_time, cpu_time / gpu_time);
+
     // free memory
     free(A);
     free(H);

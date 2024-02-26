@@ -7,7 +7,7 @@ if ! nvcc -o histogram_computation histogram_computation.cu; then
 fi
 
 # Run the program with values
-for ((i=1; i<=100; i+=8))
+for ((i=1; i<=1000000; i+=8))
 do
     echo "Running with value: $i"
     if ! ./histogram_computation $i; then
