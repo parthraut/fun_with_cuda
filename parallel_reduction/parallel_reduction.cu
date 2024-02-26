@@ -92,7 +92,7 @@ int main(int argc, char **argv){
     // check sum with CPU
     start = clock();
     int sum_cpu = 0;
-    for (int i = 0; i < N; i++){
+    for (int i = 0; i < atoi(argv[1]); i++){
         sum_cpu += A[i];
     }
     stop = clock();
