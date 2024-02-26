@@ -11,6 +11,7 @@ Make sure to handle the case where N is not a power of two.
 Experiment with using shared memory to minimize memory latency.
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <malloc.h>
 #include <cuda_runtime.h>
@@ -44,11 +45,14 @@ __global__ void add(int* A, int N){
 }
 
 int main(int argc, char **argv){
-    // Initialize array
-    int N = 256;
+    // Initialize array from argv
+    assert(argc == 2); // check if N is provided (N is the number of elements in the array A)
+    int N = atoi(argv[1]);
+
     int* A = (int*) malloc(sizeof(int) * N);
     for (int i = 0; i < N; i++){
-        A[i] = i;
+        // fill A with random numbers
+        A[i] = rand() % 100;
     }
 
     // pointer to device memory
@@ -84,8 +88,6 @@ int main(int argc, char **argv){
 
     cudaMemcpy(&sum, A_d, sizeof(int), cudaMemcpyDeviceToHost);
 
-    printf("sum is %d\n", sum);
-
     // check sum with CPU
     start = clock();
     int sum_cpu = 0;
@@ -100,7 +102,7 @@ int main(int argc, char **argv){
         printf("CPU and GPU sum match\n");
     }
     else{
-        printf("CPU and GPU sum do not match\n");
+        printf("CPU and GPU sum do not match\n: CPU sum: %d != GPU sum: %d\n", sum_cpu, sum);
     }
 
 
