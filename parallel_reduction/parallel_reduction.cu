@@ -106,6 +106,13 @@ int main(int argc, char **argv){
         printf("CPU and GPU sum do not match\n: CPU sum: %d != GPU sum: %d\n", sum_cpu, sum);
     }
 
+    // calculate speedup
+    printf("Speedup: %f\n", cpu_time / gpu_time);
+
+    // add gpu_time and cpu_time to a file
+    FILE* file = fopen("parallel_reduction.csv", "a");
+    fprintf(file, "%d, %f, %f, %f\n", matrixSize, gpu_time, cpu_time, cpu_time / gpu_time);
+
 
     cudaFree(A_d);
     free(A);
