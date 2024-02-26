@@ -7,7 +7,7 @@ if ! nvcc -o convolution convolution.cu; then
 fi
 
 # Run the program with values
-for ((i=64; i<=1000000; i*=2))
+for ((i=64; i<=10000; i+=10))
 do
     echo "Running with value: $i"
     if ! ./convolution $i; then
