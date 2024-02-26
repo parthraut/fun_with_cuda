@@ -7,7 +7,7 @@ if ! nvcc -o parallel_reduction parallel_reduction.cu; then
 fi
 
 # Run the program with values [1, 2, 4, ..., 1024]
-for ((i=1; i<=100000000; i*=5))
+for ((i=1; i<=1000000000; i*=5))
 do
     echo "Running with value: $i"
     if ! ./parallel_reduction $i; then
