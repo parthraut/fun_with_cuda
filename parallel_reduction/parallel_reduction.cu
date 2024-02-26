@@ -16,6 +16,7 @@ Experiment with using shared memory to minimize memory latency.
 #include <malloc.h>
 #include <cuda_runtime.h>
 #include <math.h>
+#include <assert.h>
 
 __global__ void add(int* A, int N){
     extern __shared__ int sdata[];
