@@ -72,6 +72,8 @@ int main(int argc, char **argv){
     // add gpu timing code
     clock_t start, stop;
     start = clock();
+
+    int kernel_invocations = 1;
     add<<<numBlocks, threadsPerBlock, sharedMemSize>>>(A_d, N);
 
     // now, sum is placed in A_d[0...numBlocks]. Keep invoking kernel until result in A_d[0]
@@ -79,10 +81,13 @@ int main(int argc, char **argv){
         N = numBlocks;
         numBlocks = (int)ceil((double)N / (double)threadsPerBlock);
         add<<<numBlocks, threadsPerBlock, sharedMemSize>>>(A_d, N);
+        kernel_invocations++;
     }
     stop = clock();
     double gpu_time = (double)(stop - start) / CLOCKS_PER_SEC;
     printf("GPU time: %f\n", gpu_time);
+
+    printf("Kernel invocations: %d\n", kernel_invocations);
 
     // transfer result
     int sum = 0;
