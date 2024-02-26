@@ -25,12 +25,13 @@ __global__ void make_histogram(int* A, int* H, int N, int M){
     }
 }
 
-int main(){
+int main(int argc, char** argv){
 
     // array A of integers - size: N, vals: 0 to M-1
+    // set N to argv[1]
+    int N = atoi(argv[1]);
 
-    int N = 100;
-    int M = 100;
+    int M = 10000;
 
     int* A = (int*) malloc(N * sizeof(int));
 
