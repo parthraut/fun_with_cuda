@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 
     // add gpu_time and cpu_time to a file
     FILE* file = fopen("parallel_reduction.csv", "a");
-    fprintf(file, "%d, %f, %f, %f\n", matrixSize, gpu_time, cpu_time, cpu_time / gpu_time);
+    fprintf(file, "%d, %f, %f, %f\n", atoi(argv[1]), gpu_time, cpu_time, cpu_time / gpu_time);
 
 
     cudaFree(A_d);
